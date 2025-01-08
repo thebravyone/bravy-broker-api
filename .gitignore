@@ -10,7 +10,6 @@
 .idea/**/tasks.xml
 .idea/dictionaries
 .idea
-.vscode
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -422,3 +421,6 @@ tests/integration/testdata/sync/code/before/dotnet_function/src/HelloWorld/obj/
 
 # Installer build folder
 .build
+
+# AWS SAM CLI environment variables file
+env.json

@@ -1,27 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: |
-  Hello World AWS Lambda and Amazon API Gateway REST API
-  Sample AWS SAM template to create a simple Lambda function connected to a REST API.
-
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
-Globals:
-  Function:
-    Timeout: 3
-
-Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
-    Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
-  HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+  Bravy-Broker API
 
 Resources:
   Function:
@@ -33,29 +13,28 @@ Resources:
       CodeUri: src/update_market_orders
       Handler: update_market_orders.handler
       Runtime: python3.13
-      MemorySize: 3008
+      MemorySize: 256
       Timeout: 30
       Tracing: Active
-      Events:
-        ServerlessRestApiGEThello:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: GET
       Layers:
-        - !Ref Services
+        - !Ref ServicesLayer
+      Environment:
+        Variables:
+          EVE_CLIENT_ID: UNSET
+          EVE_SECRET_KEY: UNSET
+          REFRESH_TOKEN: UNSET
   FunctionLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Retain
     Properties:
       LogGroupName: !Sub /aws/lambda/${Function}
-  Services:
+  ServicesLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
       Description: !Sub
         - Stack ${AWS::StackName} Layer ${ResourceName}
-        - ResourceName: Services
-      ContentUri: src/layer
+        - ResourceName: ServicesLayer
+      ContentUri: src/services-layer
       RetentionPolicy: Delete
     Metadata:
       BuildMethod: python3.13

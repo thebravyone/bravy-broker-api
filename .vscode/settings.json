@@ -1,0 +1,9 @@
+{
+  "editor.stickyTabStops": true,
+  "editor.indentSize": "tabSize",
+
+  "python.autoComplete.extraPaths": ["./src/services-layer/"],
+  "python.analysis.extraPaths": ["./src/services-layer/"],
+
+  "python.analysis.typeCheckingMode": "standard"
+}
